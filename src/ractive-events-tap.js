@@ -1,6 +1,7 @@
 const DISTANCE_THRESHOLD = 5; // maximum pixels pointer can move before cancel
 const TIME_THRESHOLD = 400;   // maximum milliseconds between down and up before cancel
 
+console.log('loaded');
 export default function tap ( node, callback ) {
 	return new TapHandler( node, callback );
 }
@@ -16,6 +17,7 @@ function TapHandler ( node, callback ) {
 
 TapHandler.prototype = {
 	bind ( node ) {
+		console.log('tap handler');
 		// listen for mouse/pointer events...
 		if ( window.navigator.pointerEnabled ) {
 			node.addEventListener( 'pointerdown', handleMousedown, false );
@@ -30,11 +32,15 @@ TapHandler.prototype = {
 
 		// ...and random click events
 		node.addEventListener( 'click', handleRealClick, false );
+		console.log('listening to click');
 
 		// native buttons, and <input type='button'> elements, should fire a tap event
 		// when the space key is pressed
-		if ( node.tagName === 'A' || node.tagName === 'BUTTON' || node.type === 'button' ) {
+		if ( node.tagName === 'A' || node.tagName === 'BUTTON' || node.type !== undefined ) {
+			console.log('listening to focus', node.type);
 			node.addEventListener( 'focus', handleFocus, false );
+		} else {
+			console.log('not listening', node.tagName, node.type);
 		}
 
 		node.__tap_handler__ = this;

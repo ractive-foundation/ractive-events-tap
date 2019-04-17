@@ -16,6 +16,7 @@ function TapHandler ( node, callback ) {
 
 TapHandler.prototype = {
 	bind: function bind ( node ) {
+        console.log('tap handler');
 		// listen for mouse/pointer events...
 		if ( window.navigator.pointerEnabled ) {
 			node.addEventListener( 'pointerdown', handleMousedown, false );
@@ -30,12 +31,16 @@ TapHandler.prototype = {
 
 		// ...and random click events
 		node.addEventListener( 'click', handleRealClick, false );
+        console.log('listening to click');
 
 		// native buttons, and <input type='button'> elements, should fire a tap event
 		// when the space key is pressed
 		if ( node.tagName === 'A' || node.tagName === 'BUTTON' || node.type === 'button' ) {
+            console.log('listening to focus');
 			node.addEventListener( 'focus', handleFocus, false );
-		}
+		} else {
+            console.log('not listening', node.tagName, node.type);
+        }
 
 		node.__tap_handler__ = this;
 	},
