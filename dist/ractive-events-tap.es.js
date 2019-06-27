@@ -115,11 +115,11 @@ TapHandler.prototype = {
 			setTimeout( cancelFakeClick, TIME_THRESHOLD );
 		};
 
-		if ( window.navigator.pointerEnabled ) {
+		if ( window.PointerEvent || window.navigator.pointerEnabled ) {
 			this.node.addEventListener( 'pointerup', handleMouseup, false );
 			document.addEventListener( 'pointermove', handleMousemove, false );
 			document.addEventListener( 'pointercancel', cancel, false );
-		} else if ( window.navigator.msPointerEnabled ) {
+		} else if ( window.PointerEvent || window.navigator.msPointerEnabled ) {
 			this.node.addEventListener( 'MSPointerUp', handleMouseup, false );
 			document.addEventListener( 'MSPointerMove', handleMousemove, false );
 			document.addEventListener( 'MSPointerCancel', cancel, false );

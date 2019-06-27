@@ -19,9 +19,9 @@ TapHandler.prototype = {
 	bind ( node ) {
 		console.log('tap handler');
 		// listen for mouse/pointer events...
-		if ( window.navigator.pointerEnabled ) {
+		if ( window.PointerEvent || window.navigator.pointerEnabled ) {
 			node.addEventListener( 'pointerdown', handleMousedown, false );
-		} else if ( window.navigator.msPointerEnabled ) {
+		} else if ( window.MSPointerEvent || window.navigator.msPointerEnabled ) {
 			node.addEventListener( 'MSPointerDown', handleMousedown, false );
 		} else {
 			node.addEventListener( 'mousedown', handleMousedown, false );
@@ -114,11 +114,11 @@ TapHandler.prototype = {
 			setTimeout( cancelFakeClick, TIME_THRESHOLD );
 		};
 
-		if ( window.navigator.pointerEnabled ) {
+		if ( window.PointerEvent || window.navigator.pointerEnabled ) {
 			this.node.addEventListener( 'pointerup', handleMouseup, false );
 			document.addEventListener( 'pointermove', handleMousemove, false );
 			document.addEventListener( 'pointercancel', cancel, false );
-		} else if ( window.navigator.msPointerEnabled ) {
+		} else if ( window.PointerEvent || window.navigator.msPointerEnabled ) {
 			this.node.addEventListener( 'MSPointerUp', handleMouseup, false );
 			document.addEventListener( 'MSPointerMove', handleMousemove, false );
 			document.addEventListener( 'MSPointerCancel', cancel, false );
