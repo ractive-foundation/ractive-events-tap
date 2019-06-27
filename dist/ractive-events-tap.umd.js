@@ -7,6 +7,7 @@
 var DISTANCE_THRESHOLD = 5; // maximum pixels pointer can move before cancel
 var TIME_THRESHOLD = 400;   // maximum milliseconds between down and up before cancel
 
+console.log('loaded');
 function tap ( node, callback ) {
 	return new TapHandler( node, callback );
 }
@@ -22,11 +23,11 @@ function TapHandler ( node, callback ) {
 
 TapHandler.prototype = {
 	bind: function bind ( node ) {
-        console.log('tap handler');
+		console.log('tap handler');
 		// listen for mouse/pointer events...
-		if ( window.navigator.pointerEnabled ) {
+		if ( window.PointerEvent || window.navigator.pointerEnabled ) {
 			node.addEventListener( 'pointerdown', handleMousedown, false );
-		} else if ( window.navigator.msPointerEnabled ) {
+		} else if ( window.MSPointerEvent || window.navigator.msPointerEnabled ) {
 			node.addEventListener( 'MSPointerDown', handleMousedown, false );
 		} else {
 			node.addEventListener( 'mousedown', handleMousedown, false );
@@ -37,16 +38,16 @@ TapHandler.prototype = {
 
 		// ...and random click events
 		node.addEventListener( 'click', handleRealClick, false );
-        console.log('listening to click');
+		console.log('listening to click');
 
 		// native buttons, and <input type='button'> elements, should fire a tap event
 		// when the space key is pressed
-		if ( node.tagName === 'A' || node.tagName === 'BUTTON' || node.type === 'button' ) {
-            console.log('listening to focus');
+		if ( node.tagName === 'A' || node.tagName === 'BUTTON' || node.type !== undefined ) {
+			console.log('listening to focus', node.type);
 			node.addEventListener( 'focus', handleFocus, false );
 		} else {
-            console.log('not listening', node.tagName, node.type);
-        }
+			console.log('not listening', node.tagName, node.type);
+		}
 
 		node.__tap_handler__ = this;
 	},
@@ -121,11 +122,11 @@ TapHandler.prototype = {
 			setTimeout( cancelFakeClick, TIME_THRESHOLD );
 		};
 
-		if ( window.navigator.pointerEnabled ) {
+		if ( window.PointerEvent || window.navigator.pointerEnabled ) {
 			this.node.addEventListener( 'pointerup', handleMouseup, false );
 			document.addEventListener( 'pointermove', handleMousemove, false );
 			document.addEventListener( 'pointercancel', cancel, false );
-		} else if ( window.navigator.msPointerEnabled ) {
+		} else if ( window.PointerEvent || window.navigator.msPointerEnabled ) {
 			this.node.addEventListener( 'MSPointerUp', handleMouseup, false );
 			document.addEventListener( 'MSPointerMove', handleMousemove, false );
 			document.addEventListener( 'MSPointerCancel', cancel, false );
