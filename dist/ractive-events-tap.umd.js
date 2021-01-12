@@ -29,10 +29,9 @@ TapHandler.prototype = {
 			node.addEventListener( 'MSPointerDown', handleMousedown, false );
 		} else {
 			node.addEventListener( 'mousedown', handleMousedown, false );
+			// ...and touch events
+			node.addEventListener( 'touchstart', handleTouchstart, false );
 		}
-
-		// ...and touch events
-		node.addEventListener( 'touchstart', handleTouchstart, false );
 
 		// ...and random click events
 		node.addEventListener( 'click', handleRealClick, false );
