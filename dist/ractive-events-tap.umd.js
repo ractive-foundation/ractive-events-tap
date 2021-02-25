@@ -31,9 +31,9 @@ TapHandler.prototype = {
 			node.addEventListener( 'mousedown', handleMousedown, false );
 			// ...and touch events
 			node.addEventListener( 'touchstart', handleTouchstart, false );
-			// ...and random click events
-			node.addEventListener( 'click', handleRealClick, false );
 		}
+		// ...and random click events
+		node.addEventListener( 'click', handleRealClick, false );
 
 		// native buttons, and <input type='button'> elements, should fire a tap event
 		// when the space key is pressed
