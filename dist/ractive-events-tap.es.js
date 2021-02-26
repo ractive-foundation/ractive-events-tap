@@ -10,6 +10,7 @@ function TapHandler ( node, callback ) {
 	this.callback = callback;
 
 	this.preventMousedownEvents = false;
+	this.preventTouchEvent = false;
 
 	this.bind( node );
 }
@@ -23,9 +24,9 @@ TapHandler.prototype = {
 			node.addEventListener( 'MSPointerDown', handleMousedown, false );
 		} else {
 			node.addEventListener( 'mousedown', handleMousedown, false );
-			// ...and touch events
-			node.addEventListener( 'touchstart', handleTouchstart, false );
 		}
+		// ...and touch events
+		node.addEventListener( 'touchstart', handleTouchstart, false );
 		// ...and random click events
 		node.addEventListener( 'click', handleRealClick, false );
 
@@ -71,6 +72,13 @@ TapHandler.prototype = {
 			if ( event.pointerId != pointerId ) {
 				return;
 			}
+			// for the benefit of mobile Firefox and old Android browsers, we need this absurd hack.
+			this$1.preventTouchEvent = true;
+			clearTimeout( this$1.preventTouchTimeout );
+
+			this$1.preventTouchTimeout = setTimeout( function () {
+				this$1.preventTouchEvent = false;
+			}, 400 );
 
 			this$1.fire( event, x, y );
 			cancel();
@@ -152,7 +160,9 @@ TapHandler.prototype = {
 				this$1.preventMousedownEvents = false;
 			}, 400 );
 
-			this$1.fire( event, x, y );
+			if ( this$1.preventTouchEvent ) {
+				this$1.fire( event, x, y );
+			}
 			cancel();
 		};
 
