@@ -156,7 +156,7 @@ TapHandler.prototype = {
 				this.preventMousedownEvents = false;
 			}, 400 );
 
-			if ( this.preventTouchEvent ) {
+			if ( !this.preventTouchEvent ) {
 				this.fire( event, x, y );
 			}
 			cancel();
